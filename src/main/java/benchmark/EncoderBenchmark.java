@@ -34,6 +34,9 @@ public class EncoderBenchmark {
         ResolvableType resolvableType;
         Pojo data;
 
+        @Param
+        Size size;
+
         @JsonFilter(FILTER_ID)
         private static class DynamicMixIn {}
 
@@ -45,7 +48,17 @@ public class EncoderBenchmark {
             customJsonEncoder = new CustomJackson2JsonEncoder(objectMapper);
             jsonEncoder = new Jackson2JsonEncoder(objectMapper);
             resolvableType = ResolvableType.forClass(Pojo.class);
-            data = Pojo.fullPojoWithNChildren(5);
+            data = Pojo.fullPojoWithNChildren(size.size);
+        }
+
+        public enum Size {
+            SMALL(2), MEDIUM(20), BIG(200);
+
+            public final int size;
+
+            Size(int size) {
+                this.size = size;
+            }
         }
     }
 
